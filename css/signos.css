@@ -1,0 +1,188 @@
+.ventana-signos {
+  margin-top: -298px;
+  height: 232px;
+  width: 300px;
+}
+
+.btn-signos svg {
+  height: 20px;
+  width: 35px;
+  margin: 4px 0;
+  /* transform: scale(2); */
+}
+.btn-signos::before {
+  top: -52px;
+}
+.titulo-signos svg {
+    transition: 0.2s;
+    height:  18px;
+    width: 18px;
+    /* transform: scale(2); */
+    
+  }
+  .btn-subtitulos {
+    margin-right: 4px;
+  }
+  
+  .btn-subtitulos use {
+    height: 30px;
+    width: 100%;
+  }
+
+.titulo-signos {
+  grid-template-columns: auto 15px;
+
+}
+
+.optSignos {
+    padding: 10px 10px;
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-items: center;
+    gap: 10px;
+  }
+  .optSignos button {
+    width: 100%;
+    border: 2px solid;
+    border-color: transparent;
+  }
+  
+  .imgOptSignos {
+    width: 100%;
+    padding: 10px;
+  }
+   
+.grid-videos {
+   position: relative;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    min-height: 365px !important;
+    min-width:  365px !important;
+    /* height: 100%; */
+    gap: 0;
+    /* background-color: aliceblue; */
+  }
+  
+  .optSignos button:hover {
+    border: 2px solid;
+    border-color:var(--youtube-red);
+  }
+  
+  #video {
+    grid-area: a;
+  }
+  #video2 {
+    grid-area: b;
+  }
+  
+  .grid7 .video, .grid8 .video {
+   width: 50%;
+   
+  }
+  
+  .grid1 {
+    grid-template-areas: 
+    "a a a a a a b b b b b b";
+  }
+
+  .grid2 {
+    grid-template-areas: 
+    "b b b b b b a a a a a a";
+  } 
+  .grid3 {
+    grid-template-areas: 
+    "a a a a b b b b b b b b";
+    
+  }
+  .grid4 {
+    /* grid-template-areas: 
+    "b b b b a a a a a a a a"; */
+    display: contents;
+  }
+  .grid4 #video2 {
+    display: flex;
+    position: absolute;
+    height: 30%;
+    width: 30%;
+    top: 20px;
+    /* left: 20px; */
+    justify-content: left;
+  }
+  .grid5 {
+    display: contents;
+  }
+  .grid5 #video2 {
+    display: flex;
+    position: absolute;
+    height: 30%;
+    width: 30%;
+    top: 20px;
+    right: 0;
+    justify-content: left;
+  }
+
+  .grid6 {
+    grid-template-areas: 
+    "b b b b b b b b a a a a";
+  }
+  .grid7 {
+    grid-template-areas: 
+    "b b b b b b b b b b b b"
+    "a a a a a a a a a a a a";
+    /* gap: 5px; */
+  }
+  .grid8 {
+    grid-template-areas: 
+    "a a a a a a a a a a a a"
+    "b b b b b b b b b b b b";
+    /* gap: 5px; */
+  }
+  .grid9{
+    display: contents;  
+  }
+  .grid9 #video2 {
+    display: none;
+  }
+
+
+  .grid10{
+    display: contents;
+
+  }
+  
+  .grid10 #video2 {
+    height: 70%;
+    display: flex;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    justify-content: left;
+  }
+  .grid10 #video {
+    opacity: 0;
+  }
+  
+
+  
+  #b-grid7, #b-grid8 {
+    width: 50%;
+  }
+  
+  .grid-boton-marcado {
+    background-color: #9800fe;
+  }
+  .grid-boton-no-marcado {
+    background-color: transparent;
+  }
+
+  .transcripcion-al-lado {
+    grid-template-areas: 
+    "v v v v v v v v v v v v" 
+    "t t t t t t t t t t t t" ;
+  }
+  .transcripcion-abajo {
+    grid-template-areas: "v v v v v v v v v t t t";
+  }

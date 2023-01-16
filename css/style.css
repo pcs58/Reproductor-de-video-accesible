@@ -1,0 +1,16 @@
+@import url("init.css");
+@import url("posicionamiento.css");
+
+@import url("controles-basicos.css"); 
+
+@import url("barraReproduccion.css");
+@import url("volumen.css");
+@import url("pantalla-completa.css");
+@import url("subtitulos.css");
+@import url("transcripcion.css");
+@import url("signos.css");
+@import url("audio-descripcion.css");
+@import url("insertar.css");
+
+@import url("pip.css");
+@import url("ayuda.css");

@@ -1,0 +1,137 @@
+.ayuda svg{
+    width: 20px;
+    height: 24px;
+    margin: 2px 0;
+}
+.ayuda {
+    width: 40px;
+}
+.ayuda::before {
+    top: -52px;
+}
+
+kbd {
+    background-color: #eee;
+    border-radius: 3px;
+    border: 1px solid #b4b4b4;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+    color: #333;
+    display: inline-block;
+    font-size: 0.85em;
+    font-weight: 700;
+    line-height: 1;
+    padding: 3px 15px;
+    white-space: nowrap;
+    font-size: 15px;
+}
+
+.ctva {
+    padding:8px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#cerrar-ayuda {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin-left: 154px; */
+    
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    width: 46px;
+    height: 46px;
+    margin-right: -20px;
+    }
+
+.ventana-ayuda {
+    z-index: 9999999;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 !important;
+    width: unset !important;
+    height: unset !important;
+    opacity: 0.99;
+    border-radius: unset !important;
+    font-size: 22px;
+    padding: 0;
+    overflow-x: hidden !important;
+    /* overflow-y: hidden !important; */
+}
+
+.titulo-ayuda {
+    background: black;
+    padding: 12px 30px;
+}
+
+.subtitulo-ayuda {
+    background: rgb(60, 60, 60);
+    padding: 10px 30px;
+    display: flex;
+    gap: 30px;
+    font-size: 20px;
+}
+
+.contenido-ayuda {
+    padding:15px 30px;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    gap: 20px;
+}
+.atajo {
+    display: flex;
+    /* grid-template-columns: auto 100%;
+    align-items: c; */
+    align-items: center;
+    gap: 30px;
+}
+.info-ayuda {
+    font-size: 15px;
+}
+.comando-atajo, .subtitulo-ayuda div {
+    width: 150px;
+}
+
+@media (max-width: 1400px) { 
+    #cerrar-ayuda {
+        width: 36px;
+        height: 36px;
+    }
+    .ctva { 
+        padding: 8px 30px;
+    }
+    .ventana-ayuda {
+        font-size: 15px;
+    }
+    .titulo-ayuda, .subtitulo-ayuda {
+        padding: 8px 30px;
+    }
+    .subtitulo-ayuda {
+        font-size: 13px;
+    }
+    .info-ayuda {
+        font-size: 13px;
+    }
+    .ctva svg {
+        height: 18px;
+        width: 18px;
+    }
+}
+
+@media (max-width: 740px) { 
+    .comando-atajo, .subtitulo-ayuda div {
+        width: 110px;
+    }
+}
+  
+@media (max-width: 382px) { 
+    .comando-atajo, .subtitulo-ayuda div {
+        width: 70px;
+    }
+
+
+}

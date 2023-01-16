@@ -1,0 +1,141 @@
+.idiomas {
+    grid-area: i;
+    user-select: none; 
+    width: 100% !important;
+
+  }
+  
+  .grid-externo {
+    /* min-width: 690px; */
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-areas: 
+    "i i c c c c c c c c c c";
+    /* grid-template-rows: auto auto; */
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 50px;
+    font-size: 18px;
+    width: 100%;
+    font-weight: 500;
+    /* color: #fff; */
+    /* border-radius: 0.6rem !important; */
+    background-color:rgb(255, 255, 255)
+  }
+  
+  
+  #bCompartir {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-around;
+    transition: 0.2s;
+    color: #fff;
+    width: 120px;
+    align-items: center;
+    gap: 5px;
+    font-size: 15px;
+    /* font-weight: bold; */
+    padding: 5px 17px;
+    /* border: 1px solid !important;
+    border-color: black; */
+    border-radius: 18px;
+    background-color: #272727;
+    user-select: none; 
+  }
+  
+  
+  
+  #bCompartir:hover {
+    background-color: #3e3e3e;
+  }
+  .compartir {
+    grid-area: c;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  
+  .grid-externo svg {
+    fill: rgb(255, 255, 255);
+    width: 16px;
+  }
+  
+  .iframe {
+    display: flex ;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px;
+    color: #fff;  
+    gap: 10px;
+    width: 100%;
+    
+    top: 0px;
+    width: 100%;
+    padding: 10px 10px;
+    height: 50px;
+    background-color: #dcdcdc;
+  }
+  .copiar {
+    background-color: #263850 !important;
+    color: #3ea6ff !important;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    border-radius: 18px;
+    width: 60px;
+    padding: 5px 17px;
+    user-select: none; 
+  }
+  
+  .copiar:active {
+    background-color: #4e78af !important;
+  }
+  .copiado {
+    user-select: none; 
+    font-size: 13px;
+    font-weight: 600;
+    background-color: rgb(96, 255, 82);
+    color:rgb(45, 124, 38);
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     border-radius: 5px;
+     height: 50px;
+     padding: 0 15px ;
+  }
+  #infoIframe {
+    background-color: #dcdcdc;
+    border: none;
+    outline: none;
+    font-size:15px;
+    font-weight:550;
+    width: 100% !important;
+    height: 100%;
+    color: #000;
+
+  }
+  #infoIframe::selection {
+    background-color: #9800fe;
+  }
+
+  @media (max-width: 1400px) { 
+    .grid-externo {
+      grid-template-areas: 
+      "i i i i i i i i i i i i"
+      "c c c c c c c c c c c c";
+    }
+    .idiomas {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .container {
+      max-width: unset !important;
+    }
+
+  }

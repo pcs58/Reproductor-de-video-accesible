@@ -1,0 +1,186 @@
+/* input[type=range].volumen {
+  background-color: #fff;
+} */
+
+
+/* input[type=range].volumen::-webkit-slider-thumb {
+  margin-left: 0;
+  margin-top: -4px;
+  height: 14px;
+  width: 14px;
+  background: #fefefe;
+}
+
+input[type=range].volumen::-webkit-slider-runnable-track {
+  height: 4px;
+  background-color: #fefefe;
+}
+input[type=range].volumen:-webkit-progress-value {
+  background-color: aliceblue;
+} */
+/*
+input[type=range].volumen::-moz-range-thumb {
+    height: 4px;
+    /* border: 1px solid #fff; 
+    background: #fefefe;
+}
+ */
+ /*
+ */
+
+ #boton-volumen::before {
+  right: unset;
+}
+.controles-volumen {
+  margin-right: 10px; 
+}
+  
+.controles-volumen input {
+  width: 100px;
+  opacity: 1;
+  transition: all 0.4s ease;
+}
+
+.controles-volumen2 button {
+  padding: 0;
+  margin: 0;
+}
+
+.controles-volumen:hover input, .controles-volumen input:focus {
+  width: 100px;
+  opacity: 1;
+}
+
+input[type="range"].volumen {
+  font-size: 1.5rem;
+  /* width: 100%; */
+}
+
+
+input[type="range"].volumen  {
+  color: #ffffff;
+  height: 4px;
+  --thumb-height: 14px;
+  --track-height: 0.125em;
+  --track-color: rgba(0, 0, 0, 0.2);
+  --brightness-hover: 180%;
+  --brightness-down: 80%;
+  --clip-edges: 0.125em;
+}
+ 
+input[type="range"].win10-thumb {
+  color: #2b2d42;
+
+  --thumb-height:1px;
+  --thumb-width: 10px;
+  --clip-edges: 0.0125em;
+}
+
+input[type="range"].volumen  {
+  position: relative;
+  background: #fff0;
+  overflow: hidden;
+}
+
+input[type="range"].volumen:active {
+  cursor: grabbing;
+}
+ 
+input[type="range"].volumen:disabled {
+  filter: grayscale(1);
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+input[type="range"].volumen,
+input[type="range"].volumen::-webkit-slider-runnable-track,
+input[type="range"].volumen::-webkit-slider-thumb {
+-webkit-appearance: none;
+  transition: all ease 1ms;
+  height: var(--thumb-height);
+}
+    
+input[type="range"].volumen::-webkit-slider-runnable-track,
+input[type="range"].volumen::-webkit-slider-thumb {
+  position: relative;
+}
+
+input[type="range"].volumen::-webkit-slider-thumb {
+  margin-left: 0.0px;
+  --thumb-radius: calc((var(--thumb-height) * 0.5) - 1px);
+  --clip-top: calc((var(--thumb-height) - var(--track-height)) * 0.5 - 0.5px);
+  --clip-bottom: calc(var(--thumb-height) - var(--clip-top));
+  --clip-further: calc(100% + 1px);
+  --box-fill: calc(-100vmax - var(--thumb-width, var(--thumb-height))) 0 0
+  100vmax currentColor;
+
+  width: var(--thumb-width, var(--thumb-height));
+  background: linear-gradient(currentColor 0 0) scroll no-repeat left center /
+  50% calc(var(--track-height) + 1px);
+  background-color: currentColor;
+  box-shadow: var(--box-fill);
+  border-radius: var(--thumb-width, var(--thumb-height));
+
+  filter: brightness(100%);
+  clip-path: polygon(
+    100% -1px,
+    var(--clip-edges) -1px,
+    0 var(--clip-top),
+    -100vmax var(--clip-top),
+    -100vmax var(--clip-bottom),
+    0 var(--clip-bottom),
+    var(--clip-edges) 100%,
+    var(--clip-further) var(--clip-further)
+  );
+  margin-top: -5px;
+}
+input[type="range"].volumen::-webkit-slider-runnable-track {
+  /* margin-top: 4px; */
+  height: 4px;
+
+  background: #474545
+}
+
+
+input[type="range"].volumen,
+input[type="range"].volumen::-moz-range-track,
+input[type="range"].volumen::-moz-range-thumb {
+  appearance: none;
+  transition: all ease 100ms;
+  height: var(--thumb-height);
+}
+
+input[type="range"].volumen::-moz-range-track,
+input[type="range"].volumen::-moz-range-thumb,
+input[type="range"].volumen::-moz-range-progress {
+  background: #474545;
+}
+
+input[type="range"].volumen::-moz-range-thumb {
+  background: currentColor;
+  border: 0;
+  width: var(--thumb-width, var(--thumb-height));
+  border-radius: var(--thumb-width, var(--thumb-height));
+  cursor: grab;
+}
+
+input[type="range"].volumen:active::-moz-range-thumb {
+  cursor: grabbing;
+}
+
+input[type="range"].volumen::-moz-range-track {
+  width: 100%;
+  background: #474545;
+}
+
+input[type="range"].volumen::-moz-range-progress {
+  appearance: none;
+  background: currentColor;
+  transition-delay: 30ms;
+}
+
+input[type="range"].volumen::-moz-range-track,
+input[type="range"].volumen::-moz-range-progress {
+  height: calc(var(--track-height) + 1px);
+  border-radius: var(--track-height);
+}

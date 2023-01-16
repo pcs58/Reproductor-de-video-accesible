@@ -1,0 +1,23 @@
+{
+    "name": "tfg-reproductor-de-video-accesible",
+    "version": "1.0.0",
+    "description": "Trabajo de fin de grado, consiste en un repdroductor de video con accesibilidad a diferentes discapacidades",
+    "main": "index.js",
+    "scripts": {
+      "dev": "npx browser-sync start -sw"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/pcs58/TFG-Reproductor-de-video-accesible.git"
+    },
+    "author": "Pablo Carrillo Sánchez",
+    "license": "ISC",
+    "devDependencies": {
+      "browser-sync": "^2.26.7"
+    },
+    "bugs": {
+      "url": "https://github.com/pcs58/TFG-Reproductor-de-video-accesible/issues"
+    },
+    "homepage": "https://github.com/pcs58/TFG-Reproductor-de-video-accesible#readme"
+  }
+  

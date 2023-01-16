@@ -1,0 +1,18 @@
+[
+    {
+        "mensaje": "Se abre la puerta",
+        "tiempo": 3
+    },
+    {
+        "mensaje": "se puede ver una habitación con un sofá, una mujer y un niño en su interior",
+        "tiempo": 6
+    },
+    {
+        "mensaje": "el niño salee de la habitación",
+        "tiempo": 12
+    },
+    {
+        "mensaje": "la mujer se sienta en el sofá",
+        "tiempo": 17
+    }
+]

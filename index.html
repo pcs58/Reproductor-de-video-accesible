@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title">Reproductor de video accesible</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.png">
+</head>
+<body>
+  <div class="grid-externo">
+    <div class="idiomas">
+      <div id="tidiomas">
+        Idiomas disponibles
+      </div>
+      <select name="idiomas" id="idiomas" aria-label="Selección de idioma">
+        <option value="es" selected aria-label="Español" id="es">Español (es)</option>
+        <option id="en" value="en" aria-label="English">English (en)</option>
+      </select>
+    </div>
+    <div class="compartir">
+      <button id="bCompartir" aria-label="Botón para compartir">
+        <svg>
+          <use href="#ico-comparte"></use>
+        </svg>
+        <div id="tcomparte">
+          Compartir
+        </div>
+      </button>
+      <div class="iframe">
+        <input type="text" id="infoIframe" readonly aria-label="Texto iframe para insertar">
+        <button class="copiar hidden" id="copiar" aria-label="Copiar iframe en portapapeles">
+          Copiar
+        </button>
+      </div>
+      <div class="copiado hidden" id="copiado">Copiado!!</div>
+    </div>
+  </div>
+  <div class="main-container">
+    <div class="container no-transcripcion" id="container">
+        <div class="video-container" id="video-container">
+          <div class="grid-videos grid9" id="grid-videos">
+            <video  controls class="video" id="video"  preload="metadata" poster="assets/padrino.jpg " >
+              <source src="assets/elpadrino.mp4" type="video/mp4">
+              <track label="English" kind="subtitles" srclang="en" src="assets/The Godfather_en.vtt" id="en_track">
+              <track label="Español" kind="subtitles" srclang="es" src="/assets/The Godfather_es.vtt" id="es_track">
+              <track src="assets/audio-descripcion-es.vtt" kind="descriptions" srclang="es" label="Español" class="descripciones">
+              <track src="assets/audio-descripcion-en.vtt" kind="descriptions" srclang="en" label="English" class="descripciones">
+            </video>
+            <video controls class="video" id="video2" preload="metadata">
+              <source src="assets/signos.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <div class="animacion-play" id="animacion-play">
+            <svg class="iconos-play">
+              <use class="hidden" href="#play-icon"></use>
+              <use href="#pause"></use>
+            </svg>
+          </div>
+          <div class="volumenAnimacion" id="subirVolumen">
+            <svg>
+              <use href="#volume-high"></use>
+            </svg>
+          </div>
+          <div class="volumenAnimacion" id="bajarVolumen">
+            <svg>
+              <use href="#volume-low"></use>
+            </svg>
+          </div>
+          <div class="mostrarNumero" id="mostrarNumero">
+          </div>
+          <div class="adelantaVideo" id="adelantaVideo">
+            <svg>
+              <use href="#siguienteVideo"></use>
+            </svg>
+            <div>
+              5 segundos
+            </div>
+          </div>
+          <div class="atrasaVideo" id="atrasaVideo">
+            <svg>  
+              <use href="#atrasVideo"></use>
+            </svg>
+            <div>
+              5 segundos
+            </div>
+          </div>
+            
+            <div class="divCues hidden" id="divCues">
+              <span class="cues" id="cues"></span>
+            </div>
+
+
+  
+            <div class="video-controles" id="video-controles">
+                <div class="video-progreso">
+                    <progress id="barra-progreso" class="" value="0" min="0"></progress>
+                    <input class="progreso progresoFino focoAncho" id="progreso" value="0" min="0" type="range" step="0.000000001" aria-label="barra de progreso del vídeo">
+                    <div class="info-progreso" id="info-progreso">00:00</div>
+                </div>
+
+                <div class="botones-control">
+                  <div class="botones-izquierda">
+                    <button data-title="Reproducir (k)" id="play" aria-label="Botón para reproducir vídeo">
+                      <svg class="iconos-play">
+                        <use href="#play-icon"></use>
+                        <use class="hidden" href="#pause"></use>
+                      </svg>
+                    </button>
+                    
+                    <div class="controles-volumen">
+                      <button data-title="Silenciar (m)" class="boton-volumen" id="boton-volumen" aria-label="Botón para silenciar audio">
+                        <svg class="iconos-volumen">
+                          <use class="hidden" href="#volume-mute"></use>
+                          <use class="hidden" href="#volume-low"></use>
+                          <use href="#volume-high"></use>
+                        </svg>
+                      </button>
+        
+                      <input class="volumen" id="volumen" value="1"
+                      data-mute="0.5" type="range" max="1" min="0" step="0.01" aria-label="barra de volumen vídeo">
+                    </div>
+        
+                    <div class="time">
+                      <time id="tiempo-transcurrido">00:00</time>
+                      <span> / </span>
+                      <time id="duracion">00:00</time>
+                    </div>
+                  </div>
+                  <div class="botones-derecha">
+                    <!-- |||||||||||||| AUDIO DESCRIPCION ||||||||||||||||| -->
+                    <button data-title="Audiodescripción (a)" class="btn-signos" id="btn-ad" aria-label="Botón alternar ventana audiodescripción">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                        <use href="#b-audio-descripcion"></use>
+                      </svg>
+                      <div class="hrActiva hidden" id="activaAd"><hr class="optActiva"></div>
+                    </button>
+
+                    <div class="ventana ventana-audio-descripcion hidden" id="ventana-audio-descripcion">
+                      <div class="titulo-ad" id="titulo-ad">
+                        <div id="tad">Audiodescripción</div>
+                        
+                        <button id="opciones-ad" aria-label="botón de opciones de audio">Opciones de audio</button>
+                        
+                        <button data-title="Cerrar" class="" id="cerrar-ad" aria-label="botón de cerrar ventana audiodescripción">
+                          <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -30 320 512">
+                              <use href="#subtitulos-cerrar"></use>
+                            </svg>
+                          </div>
+                        </button>
+                      </div>
+      
+                      <hr class="hr-ventana">
+      
+                      
+                      
+                      <div class="contenido-idiomas-ad">
+                        <select name="idiomasAd" id="idiomasAd" class="idiomasAd">
+    
+                        </select>
+                    </div>
+                      <div class="contenido-ad" id="contenido-ad">
+                        <button class="btn-voces" id="btn-voces">
+                          <div class="t-voces" id="tvoces" aria-label="botón de selección de voz">Selecciona una voz</div>
+                        </button>
+                        <div class="voces hidden" id="voces">
+                        </div>
+                      </div>
+                      <button class="btn-seleccion-ad" id="ad-desactivada" aria-label="botón de audiodescripción desactivada">
+                        <div class="seleccion-ad" id="seleccion-ad">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"  class="ad-check-icon">
+                              <use href="#check"></use>
+                            </svg>
+                            <div id="adDesactivada">
+                              Desactivada
+                            </div>
+                        </div>
+                      </button>
+                      <button class="btn-seleccion-ad" id="ad-activada" aria-label="botón de audiodescripción activada">
+                        <div class="seleccion-ad" id="seleccion-ad">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"  class="ad-check-icon cero-opacity">
+                              <use href="#check"></use>
+                            </svg>
+                            <div id="adad">
+                              Audiodescripción
+                            </div>
+                        </div>
+                      </button>
+                      <button class="btn-seleccion-ad" id="ad-extendida" aria-label="botón de audiodescripción extendida activada">
+                        <div class="seleccion-ad" id="seleccion-ad">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"  class="ad-check-icon cero-opacity">
+                              <use href="#check"></use>
+                            </svg>
+                            <div id="adade">
+                              Audiodescripción extendida
+                            </div>
+                        </div>
+                      </button>
+                    </div>
+      
+                    <div class="ventana config-ad hidden" id="config-ad">
+                      <button class="volver-ad" id="volver-ad" aria-label="volver a ventana de audiodescripción">
+                        <svg><use href="#back"></use></svg>
+                        <div id="tadvolver">
+                          Opciones de audiodescripción
+                        </div>
+                      </button>
+      
+                      <div class="niveles-audio" id="niveles-audio">
+                        <div class="h-niveles-audio" id="adna">Niveles de audio</div>
+      
+                        <div class="grid-niveles-audio" id="audio-principal">
+                          <div id="tadap">
+                            Principal
+                          </div>
+                          <div class="volume-controls2">
+                            <input class="volumen v2" id="volumen-principal-input" value="1"
+                            data-mute="0.5" type="range" max="1" tabindex="0" min="0" step="0.01" aria-label="barra para ajustar el volumen principal">
+                          </div>
+                          <div class="numero-opcion-ad" id="numero-volumen"></div>
+                        </div>
+      
+      
+                        <div class="grid-niveles-audio" id="audio-ad">
+                          <div id="tcad">
+                            Audiodescripción
+                          </div>
+                          <div class="volume-controls2">
+                            <input class="volumen v2" id="volumen-ad-input" value="1"
+                            data-mute="0.5" type="range" max="1" min="0" step="0.01" aria-label="barra para ajustar el volumen de audiodescripción">
+                          </div>
+                          <div class="numero-opcion-ad" id="numero-volumen-ad"></div>
+                        </div>
+      
+      
+                        <div class="h-niveles-audio" id="tcpad">Parámetros de audiodescripción</div>
+      
+                        <div class="grid-niveles-audio" id="velocidad-ad">
+                          <div id="tcv">
+                            Velocidad
+                          </div>
+                          <div class="volume-controls2">         
+                            <input class="volumen" id="velocidad-ad-input" value="1"
+                            data-mute="0.5" type="range" max="2" min="0.01" step="0.01" aria-label="barra para ajustar velocidad de audiodescripción">
+                          </div>
+                          <div class="numero-opcion-ad" id="numero-velocidad"></div>
+                        </div>
+      
+      
+                        <div class="grid-niveles-audio" id="tono-ad">
+                          <div id="ttono">
+                            Tono
+                          </div>
+                          <div class="volume-controls2">
+                            <input class="volumen" id="tono-ad-input" value="1"
+                            data-mute="0.5" type="range" max="2" min="0" step="0.01" aria-label="barra para ajustar del timbre del narrador de audiodescripción">
+                          </div>
+                          <div class="numero-opcion-ad" id="numero-tono"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- |||||||||||||| LENGUA DE SIGNOS ||||||||||||||||| -->
+                    <button data-title="Lenguaje de signos (l)" class="btn-signos" id="btn-signos" aria-label="botón para abrir y cerrar ventana de audiodescripción">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                        <use href="#signLanguage"></use>
+                      </svg>
+                      <div class="hrActiva hidden" id="activaSignos"><hr class="optActiva"></div>
+                    </button>
+
+                    <div class="ventana ventana-signos hidden" id="ventana-signos">
+                      <div class="titulo-signos">
+                        <div id="ld">Lengua de signos</div>
+                        <button data-title="Cerrar" class="" id="cerrar-signos" aria-label="botón para cerrar la ventana de lengua de signos">
+                          <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -30 320 512">
+                              <use href="#subtitulos-cerrar"></use>
+                            </svg>
+                          </div>
+                        </button>
+                      </div>
+                      <div class="optSignos">
+                        <button class="elige-grid grid-boton-marcado" id="b-grid9"  aria-label="boton para mostrar solamente el vídeo principal por pantalla" >
+                          <img src="assets/soloVideo.png" alt="1" class="imgOptSignos">
+                        </button>
+                        <button class="elige-grid" id="b-grid10"aria-label="botón para mostrar solamente el intérprete de lengua de signos por pantalla">
+                          <img src="assets/soloInterprete.png" alt="2" class="imgOptSignos">
+                        </button>
+                        <button class="elige-grid" id="b-grid1" aria-label="botón para mostrar el vídeo principal a la izquierda y el intérprete a la derecha al mismo tamaño">
+                          <img src="assets/1.png" alt="1" class="imgOptSignos">
+                        </button>
+                        <button class="elige-grid" id="b-grid2" aria-label="boton para mostrar el vídeo principal a la derecha y el intérprete a la izquierda al mismo tamaño" >
+                          <img src="assets/2.png" alt="2" class="imgOptSignos">
+                        </button>
+                        <button class="elige-grid" id="b-grid5" aria-label="boton para mostrar el vídeo principal a la izquierda y el intérprete a la derecha en pequeño">
+                          <img src="assets/3.png" alt="1" class="imgOptSignos">
+                        </button>
+                        <button class="elige-grid" id="b-grid4" aria-label="boton para mostrar el vídeo principal a la derecha y el intérprete a la izquierda en pequeño" >
+                          <img src="assets/4.png" alt="2" class="imgOptSignos">
+                        </button>
+                        <button class="elige-grid" id="b-grid3" aria-label="boton para mostrar el vídeo principal a la izquierda en pequeño y el intérprete a la derecha">
+                          <img src="assets/5.png" alt="1" class="imgOptSignos">
+                        </button>
+                        <button class="elige-grid" id="b-grid6" aria-label="boton para mostrar  el vídeo principal a la derecha en pequeño y el intérprete a la izquierda" >
+                          <img src="assets/6.png" alt="2" class="imgOptSignos">
+                        </button>
+                        <button class="elige-grid" id="b-grid8" aria-label="boton para mostrar el vídeo principal en la parte superior y el intérprete en la parte inferior de la pantalla">
+                          <img src="assets/7-n.png" alt="2" class="imgOptSignos">
+                        </button>
+                        <button class="elige-grid" id="b-grid7" aria-label="boton para mostrar el vídeo principal en la parte inferior y el intérprete en la parte superior de la pantalla">
+                          <img src="assets/8-n.png" alt="2" class="imgOptSignos">
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- |||||||||||||| TRANSCRIPCION ||||||||||||||||| -->
+                    <button data-title="Transcripción (t)" class="btn-transcripcion" id="btn-transcripcion" aria-label="boton para abrir ventana de transcripción">                      
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <use  href="#subtitles"></use>
+                      </svg>
+                      <div class="hrActiva hidden" id="activaTranscripcion"><hr class="optActiva"></div>
+                    </button>
+                    
+                    <!-- |||||||||||||| SUBTITULOS ||||||||||||||||| -->
+                    <button data-title="Subtítulos (s)" class="btn-subtitulos" id="btn-subtitulos" aria-label="boton para abrir la ventana de subtítulos">
+                      <svg height="100%" width="100%" viewBox="0 0 512 512" fill-opacity="1" preserveAspectRatio="xMidYMid meet">
+                        <use href="#subtitulos"></use>
+                        <use href="#subtitulos-cerrar" class="hidden"></use>
+                      </svg>  
+                      <div class="hrActiva hidden" id="activaSubtitulos"><hr class="optActiva"></div>
+                    </button>
+                    <div class="ventana ventana-subtitulos hidden" id="ventana-subtitulos">
+                      <div class="titulo-subtitulos" id="titulo-subtitulos">
+                        <div id="t-titulo-subtitulos">
+                          Subtítulos
+                        </div>
+                        <button class="opcionesSubtitulos" id="opcionesSubtitulos" aria-label="boton que abre ventana de opciones de subtítulos">Opciones</button>
+                        <button data-title="Cerrar" class="pip-button" id="cerrar-subtitulos" aria-label="boton para cerrar la ventana">
+                          <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                              <use href="#subtitulos-cerrar"></use>
+                            </svg>
+                          </div>
+                        </button>
+                      </div>
+                      <hr class="hr-ventana">
+                      <button id="subtitulos-desactivados" aria-label="boton para desactivar subtítulos">
+                        <div class="seleccion-subtitulos" id="seleccion-subtitulos">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"  class="check-icon">
+                              <use href="#check"></use>
+                            </svg>
+                            <div id="desactivado">
+                              Desactivado
+                            </div>
+                        </div>
+          
+                      </button>
+                      
+                    </div>
+
+                    <div class="ventana opciones-subtitulos hidden" id="opciones-subtitulos">
+                      <button class="volver-subtitulos" id="volver-subtitulos" aria-label="botón para volver a la ventana de subtítulos">
+                        <svg><use href="#back"></use></svg>
+                        <div id="vs">
+                          Volver
+                        </div>
+                      </button>
+                      <hr class="hr-ventana">
+                      <div class="config-subtitulos">
+                        <button id="color-fuente" aria-label="boton para abrir la ventana de selección de color de fuente de subtítulos">
+                          <div id="cf">Color de fuente</div>
+                          <div id="info-color-fuente"></div>
+                          <svg class="arrow-next"><use href="#back"></use></svg>
+                        </button>
+                        <button id="tamano-fuente" aria-label="boton para abrir la ventana de configuración de tamaño de fuente de subtítulos">
+                          <div id="tf">Tamaño de fuente</div>
+                          <div id="info-tamano-fuente"></div>
+                          <svg class="arrow-next"><use href="#back"></use></svg>
+                        </button>
+                        <button id="color-fondo" aria-label="botón para abrir la ventana de configuracion del color de fondo de subtítulos">
+                          <div id="cfo">Color de fondo</div>
+                          <div id="info-color-fondo"></div>
+                          <svg class="arrow-next"><use href="#back"></use></svg>
+                        </button>
+                        <button id="opacidad-fondo" aria-label="botón para abrir la ventana de configuración de la opacidad del fondo de subtítulos">
+                          <div id="ofo">Opacidad de fondo</div>
+                          <div id="info-opacidad-fondo"></div>
+                          <svg class="arrow-next"><use href="#back"></use></svg>
+                        </button>
+                        <button id="opacidad-fuente" aria-label="botón para abrir la ventana de configuración de la opacidad de la fuente de subtítulos">
+                          <div id="of">Opacidad de fuente</div>
+                          <div id="info-opacidad-fuente"></div>
+                          <svg class="arrow-next"><use href="#back"></use></svg>
+                        </button>
+                        <button id="restablecer-ajustes" aria-label="botón para retablecer los ajustes por defecto">
+                          <div id="ra">Restablecer ajustes</div>
+                        </button>
+                      </div>
+                  </div>
+    
+                  <div class="ventana opciones-subtitulos v opt hidden" id="opt-color-fuente">
+                    <button class="volver-subtitulos volver-opciones" id="volver-opciones" aria-label="Botón para volver a la ventana opciones de subtítulos">
+                      <svg><use href="#back"></use></svg>
+                      <div id="tcf">Color de fuente</div>
+                    </button>
+                    <hr class="hr-ventana">
+                    <div class="opciones-opciones-subtitulos">
+                      <button class="color-fuente blanco" id="white" aria-label="botón seleccionar blanco">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class=""><use href="#check"></use></svg>
+                        <div id="cfBlanco">Blanco</div>
+                      </button>
+                      <button class="color-fuente amarillo" id="yellow" aria-label="botón seleccionar amarillo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div id="cfAmarillo">Amarillo</div>
+                      </button>
+                      <button class="color-fuente green" id="green" aria-label="botón seleccionar verde">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div id="cfVerde">Verde</div>
+                      </button>
+                      <button class="color-fuente cian" id="cyan" aria-label="botón seleccionar cian">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div id="cfCian">Cian</div>
+                      </button>
+                      <button class="color-fuente azul" id="blue" aria-label="botón seleccionar azul">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div id="cfAzul">Azul</div>
+                      </button>
+                      <button class="color-fuente magenta" id="magenta" aria-label="botón seleccionar magenta">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div id="cfMagenta">Magenta</div>
+                      </button>
+                      <button class="color-fuente red" id="red" aria-label="botón seleccionar rojo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div id="cfRojo">Rojo</div>
+                      </button>
+                      <button class="color-fuente negro" id="black" aria-label="botón seleccionar negro">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div id="cfNegro">Negro</div>
+                      </button>
+                    </div>
+                  </div>
+      
+                  <div class="ventana opciones-subtitulos opt hidden" id="opt-tamano-fuente">
+                    <button class="volver-subtitulos volver-opciones" id="volver-opciones" aria-label="Botón para volver a la ventana opciones de subtítulos">
+                      <svg><use href="#back"></use></svg>
+                      <div id="ttf">
+                        Tamaño de fuente
+                      </div>
+                    </button>
+                    <hr class="hr-ventana">
+                    <div class="opciones-opciones-subtitulos">
+                      <button class="tamano-fuente tam50" id="tam-50" aria-label="botón tamaño 50%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div>50%</div>
+                      </button>
+                      <button class="tamano-fuente tam-75" id="tam-75" aria-label="botón tamaño 75%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div>75%</div>
+                      </button>
+                      <button class="tamano-fuente tam100" id="tam-100" aria-label="botón tamaño 100%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class=""><use href="#check"></use></svg>
+                        <div>100%</div>
+                      </button>
+                      <button class="tamano-fuente tam150" id="tam-150" aria-label="botón tamaño 150%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div>150%</div>
+                      </button>
+                      <button class="tamano-fuente tam200" id="tam-200" aria-label="botón tamaño 200%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div>200%</div>
+                      </button>
+                      <button class="tamano-fuente tam300" id="tam-300" aria-label="botón tamaño 300%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div>300%</div>
+                      </button>
+                      <button class="tamano-fuente tam400" id="tam-400" aria-label="botón tamaño 400%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div>400%</div>
+                      </button>
+                    </div>
+                  </div>
+  
+                  <div class="ventana opciones-subtitulos opt hidden" id="opt-color-fondo">
+                    <button class="volver-subtitulos volver-opciones" id="volver-opciones" aria-label="Botón para volver a la ventana opciones de subtítulos">
+                      <svg><use href="#back"></use></svg>
+                      <div id="tcfo">
+                        Color de fondo
+                      </div>
+                    </button>
+                    <hr class="hr-ventana">
+                    <div class="opciones-opciones-subtitulos">
+                      <button class="color-fondo blanco" id="white" aria-label="botón seleccionar blanco">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div id="cfoBlanco">Blanco</div>
+                      </button>
+                      <button class="color-fondo amarillo" id="yellow" aria-label="botón seleccionar amarillo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div id="cfoAmarillo">Amarillo</div>
+                      </button>
+                      <button class="color-fondo verde" id="green" aria-label="botón seleccionar verde">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div id="cfoVerde">Verde</div>
+                      </button>
+                      <button class="color-fondo cian" id="cyan" aria-label="botón seleccionar cian">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div id="cfoCian">Cian</div>
+                      </button>
+                      <button class="color-fondo azul" id="blue" aria-label="botón seleccionar azul">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div id="cfoAzul">Azul</div>
+                      </button>
+                      <button class="color-fondo magenta" id="magenta" aria-label="botón seleccionar magenta">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div id="cfoMagenta">Magenta</div>
+                      </button>
+                      <button class="color-fondo rojo" id="red" aria-label="botón seleccionar rojo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div id="cfoRojo">Rojo</div>
+                      </button>
+                      <button class="color-fondo negro" id="black" aria-label="botón seleccionar negro">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class=""><use href="#check"></use></svg>
+                        <div id="cfoNegro">Negro</div>
+                      </button>
+                    </div>
+                  </div>
+    
+                  <div class="ventana opciones-subtitulos opt hidden" id="opt-opacidad-fondo">
+                    <button class="volver-subtitulos volver-opciones" id="volver-opciones" aria-label="Botón para volver a la ventana opciones de subtítulos">
+                      <svg><use href="#back"></use></svg>
+                      <div id="tofo">
+                        Opacidad de fondo
+                      </div>
+                    </button>
+                    <hr class="hr-ventana">
+                    <div class="opciones-opciones-subtitulos">
+                      <button class="opacidad-fondo opa0" id="tam-0" aria-label="botón opacidad 0%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div>0%</div> 
+                      </button>
+                      <button class="opacidad-fondo opa25" id="tam-25" aria-label="botón opacidad 25%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div>25%</div>
+                      </button>
+                      <button class="opacidad-fondo opa50" id="tam-50" aria-label="botón opacidad 50%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div>50%</div>
+                      </button>
+                      <button class="opacidad-fondo opa75" id="tam-75" aria-label="botón opacidad 75%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div>75%</div>
+                      </button>
+                      <button class="opacidad-fondo opa100" id="tam-100" aria-label="botón opacidad 100%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class=""><use href="#check"></use></svg>
+                        <div>100%</div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="ventana opciones-subtitulos opt hidden" id="opt-opacidad-fuente">
+                    <button class="volver-subtitulos volver-opciones" id="volver-opciones" aria-label="Botón para volver a la ventana opciones de subtítulos">
+                      <svg><use href="#back"></use></svg>
+                      <div id="tof">
+                        Opacidad de fuente
+                      </div>
+                    </button>
+                    <hr class="hr-ventana">
+                    <div class="opciones-opciones-subtitulos">
+                      <button class="opacidad-fuente opa25" id="tam-25" aria-label="botón opacidad 25%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div>25%</div>
+                      </button>
+                      <button class="opacidad-fuente opa50" id="tam-50" aria-label="botón opacidad 50%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div>50%</div>
+                      </button>
+                      <button class="opacidad-fuente opa75" id="tam-75" aria-label="botón opacidad 75%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="cero-opacity"><use href="#check"></use></svg>
+                        <div>75%</div>
+                      </button>
+                      <button class="opacidad-fuente opa100" id="tam-100" aria-label="botón opacidad 100%">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class=""><use href="#check"></use></svg>
+                        <div>100%</div>
+                      </button>
+                    </div>
+                  </div>
+
+                    <!-- |||||||||||||| PIP ||||||||||||||||| -->
+                    <button data-title="Imagen en imagen (p)" class="pip-button" id="pip-button" aria-label="botón para abrir modo picture in picture">
+                      <svg>
+                        <use href="#pip"></use>
+                      </svg>
+                      <div class="hrActiva hidden" id="activaPip"><hr class="optActiva"></div>
+                    </button>
+
+
+                    <!-- |||||||||||||| AYUDA ||||||||||||||||| -->
+                    <button data-title="Ayuda (h)" class="ayuda" aria-label="botón para abrir ventana de ayuda" id="b-ayuda">
+                      <svg xmlns="http://www.w3.org/2000/svg">
+                        <use href="#ayuda"></use>
+                      </svg>
+                    </button>
+                    <div class="ventana ventana-ayuda hidden" id="ventana-ayuda">
+                      <div class="ctva">
+                        <div class="tva" id="tva">Ayuda</div>
+                        <button data-title="Cerrar" class="pip-button" id="cerrar-ayuda">
+                          <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -30 320 512">
+                              <use href="#subtitulos-cerrar"></use>
+                            </svg>
+                          </div>
+                        </button>
+                      </div>
+                      <div class="titulo-ayuda" id="tvaa">Atajos de teclado</div>
+                      <div class="subtitulo-ayuda">
+                        <div id="tecla" id="tecla">Tecla</div>
+                        <div id="accion" id="accion">Acción</div>
+                      </div>
+                      <div class="contenido-ayuda">
+                        <div class="atajo">
+                          <div class="comando-atajo"><kbd>🡩</kbd></div>
+                          <div class="info-ayuda" id="sv">Sube el volumen un 5%</div>
+                        </div>
+                        <div class="atajo">
+                          <div class="comando-atajo"><kbd>🡫</kbd></div>
+                          <div class="info-ayuda" id="bv">Baja el volumen un 5%</div>
+                        </div>
+                        <div class="atajo">
+                          <div class="comando-atajo"><kbd>🡨</kbd></div>
+                          <div class="info-ayuda" id="avi">Atrasa el tiempo del vídeo 5 segundos</div>
+                        </div>
+                        <div class="atajo">
+                          <div class="comando-atajo"><kbd>🡪</kbd></div>
+                          <div class="info-ayuda" id="advi">Adelanta el tiempo del vídeo 5 segundos</div>
+                        </div>
+                        <div class="atajo">
+                          <div class="comando-atajo"><kbd id="espacio">Espacio</kbd></div>
+                          <div class="info-ayuda" id="arp">Alterna entre reproducción y pausa</div>
+                        </div>
+                        <div class="atajo">
+                          <div class="comando-atajo"><kbd>k</kbd></div>
+                          <div class="info-ayuda" id="arp2">Alterna entre reproducción y pausa</div>
+                        </div>
+                        <div class="atajo">
+                          <div class="comando-atajo"><kbd>m</kbd></div>
+                          <div class="info-ayuda" id="ams">Alterna entre silencio o sonando.</div>
+                        </div>
+                        <div class="atajo">
+                          <div class="comando-atajo"><kbd>f</kbd></div>
+                          <div class="info-ayuda" id="apf">Alterna entre modo pantalla completa o viceversa</div>
+                        </div>
+                        <div class="atajo">
+                          <div class="comando-atajo"><kbd>p</kbd></div>
+                          <div class="info-ayuda" id="apip">Alterna entre modo PiP y viceversa</div>
+                        </div>
+                        <div class="atajo">
+                          <div class="comando-atajo"><kbd>s</kbd></div>
+                          <div class="info-ayuda" id="mvs">Muestra u oculta la ventana de subtítulos</div>
+                        </div>
+                        <div class="atajo">
+                          <div class="comando-atajo"><kbd>t</kbd></div>
+                          <div class="info-ayuda" id="mvt">Muestra u oculta la ventana de transcripción</div>
+                        </div>
+                        <div class="atajo">
+                          <div class="comando-atajo"><kbd>l</kbd></div>
+                          <div class="info-ayuda" id="mvsi">Muestra u oculta la ventana de lengua de signos</div>
+                        </div>
+                        <div class="atajo">
+                          <div class="comando-atajo"><kbd>a</kbd></div>
+                          <div class="info-ayuda" id="mvad">Muestra u oculta la ventana de audiodescripción</div>
+                        </div>
+                        <div class="atajo">
+                          <div class="comando-atajo"><kbd>h</kbd></div>
+                          <div class="info-ayuda" id="mva">Muestra u oculta la ventana de ayuda</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    
+                    <!-- |||||||||||||| PANTALLA COMPLETA ||||||||||||||||| -->
+                    <button data-title="Pantalla completa (f)" class="boton-pantalla-completa" id="boton-pantalla-completa" aria-label="botón para abrir en pantalla completa">
+                      <svg>
+                        <use href="#fullscreen"></use>
+                        <use href="#fullscreen-exit" class="hidden"></use>
+                      </svg>
+                    </button>
+                  </div>
+                
+                </div>
+  
+            </div>
+        </div>
+        <div class="transcripcion-container hidden" id="transcripcion-container">
+          <div class="titulo-transcripcion" id="titulo-transcripcion">
+            <div id="tTrans">
+              Transcripción
+            </div>
+            <div class="selecciona-transcripcion" id="selecciona-transcripcion">
+              <button class="seleccion-transcripcion seleccionado-transcripcion" id="transcripcion-desactivada" aria-label="botón para desactivar la transcripción">Desactivado</button>
+              <!-- <button class="seleccion-transcripcion seleccionado-transcripcion" id="en-transcripcion">English</button>
+              <button class="seleccion-transcripcion sin-margen" id="es-transcripcion">Español</button> -->
+            </div>
+            <div> </div>
+            <button id="buscar-transcripcion-falso" aria-label="botón para abrir la barra de búsqueda de transcripción">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -30 512 512">
+                <use href="#search"></use>
+              </svg>
+            </button>
+          </div>
+  
+          <div class="buscar-transcripcion hidden" id="buscar-transcripcion">
+            <button id="volver-busqueda-transcripcion" aria-label="botón para volver a selección de idioma de transcripción">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox=" 0 -30 448 512">
+                <use href="#arrow-back"></use>
+              </svg>
+             
+            </button>
+            <div>
+              <input type="text" name="t-buscar" id="transcripcion-buscar-input" aria-label="campo de texto de búsqueda de transcripción">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="borrarTexto" id="borrarTexto" style="display: none;">
+                <use href="#close"></use>
+              </svg>
+            </div>
+            <button type="submit" class="boton-buscar-transcripcion mb" id="boton-buscar-transcripcion" aria-label="botón para buscar en transcripción">     
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <use href="#search"></use>
+              </svg>
+            </button>
+          </div>
+  
+          <div class="t-header">
+            
+          </div>
+          <div class="transcripcion-cues hidden" id="transcripcion-cues">
+          </div>
+          <div class="hidden" id="mensaje-respuesta"> </div>
+        </div>
+    </div>
+  </div>
+
+  <div id="datosAd" style="display: none"></div>  
+  <svg style="display: none">
+      <defs>
+        <symbol id="ayuda" viewBox="0 0 512 512">
+          <path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z"/>
+        </symbol>
+        <symbol id="siguienteVideo"  viewBox="0 0 512 512">
+          <path d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416V96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3V256v41.7L52.5 440.6zM256 352V256 128 96c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29V352z"/>
+        </symbol>
+        <symbol id="atrasVideo" viewBox="0 0 512 512">
+          <path d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3V256v41.7L459.5 440.6zM256 352V256 128 96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V352z"/>
+        </symbol>
+  
+        <symbol id="ico-comparte" viewBox="0 0 512 512">
+          <path d="M307 34.8c-11.5 5.1-19 16.6-19 29.2v64H176C78.8 128 0 206.8 0 304C0 417.3 81.5 467.9 100.2 478.1c2.5 1.4 5.3 1.9 8.1 1.9c10.9 0 19.7-8.9 19.7-19.7c0-7.5-4.3-14.4-9.8-19.5C108.8 431.9 96 414.4 96 384c0-53 43-96 96-96h96v64c0 12.6 7.4 24.1 19 29.2s25 3 34.4-5.4l160-144c6.7-6.1 10.6-14.7 10.6-23.8s-3.8-17.7-10.6-23.8l-160-144c-9.4-8.5-22.9-10.6-34.4-5.4z"/>
+        </symbol>
+        <symbol id="pause" viewBox="0 0 24 24">
+          <path d="M14.016 5.016h3.984v13.969h-3.984v-13.969zM6 18.984v-13.969h3.984v13.969h-3.984z"></path>
+        </symbol>
+  
+        <symbol id="play-icon" viewBox="0 0 24 24">
+          <path d="M8.016 5.016l10.969 6.984-10.969 6.984v-13.969z"></path>
+        </symbol>
+        <symbol id="volume-high" viewBox="0 0 24 24">
+          <path d="M14.016 3.234q3.047 0.656 5.016 3.117t1.969 5.648-1.969 5.648-5.016 3.117v-2.063q2.203-0.656 3.586-2.484t1.383-4.219-1.383-4.219-3.586-2.484v-2.063zM16.5 12q0 2.813-2.484 4.031v-8.063q1.031 0.516 1.758 1.688t0.727 2.344zM3 9h3.984l5.016-5.016v16.031l-5.016-5.016h-3.984v-6z"></path>
+          </symbol>
+    
+          <symbol id="volume-low" viewBox="0 0 24 24">
+          <path d="M5.016 9h3.984l5.016-5.016v16.031l-5.016-5.016h-3.984v-6zM18.516 12q0 2.766-2.531 4.031v-8.063q1.031 0.516 1.781 1.711t0.75 2.32z"></path>
+          </symbol>
+    
+          <symbol id="volume-mute" viewBox="0 0 24 24">
+          <path d="M12 3.984v4.219l-2.109-2.109zM4.266 3l16.734 16.734-1.266 1.266-2.063-2.063q-1.547 1.313-3.656 1.828v-2.063q1.172-0.328 2.25-1.172l-4.266-4.266v6.75l-5.016-5.016h-3.984v-6h4.734l-4.734-4.734zM18.984 12q0-2.391-1.383-4.219t-3.586-2.484v-2.063q3.047 0.656 5.016 3.117t1.969 5.648q0 2.203-1.031 4.172l-1.5-1.547q0.516-1.266 0.516-2.625zM16.5 12q0 0.422-0.047 0.609l-2.438-2.438v-2.203q1.031 0.516 1.758 1.688t0.727 2.344z"></path>
+          </symbol>
+    
+          <symbol id="fullscreen" viewBox="0 0 24 24">
+          <path d="M14.016 5.016h4.969v4.969h-1.969v-3h-3v-1.969zM17.016 17.016v-3h1.969v4.969h-4.969v-1.969h3zM5.016 9.984v-4.969h4.969v1.969h-3v3h-1.969zM6.984 14.016v3h3v1.969h-4.969v-4.969h1.969z"></path>
+          </symbol>
+    
+          <symbol id="fullscreen-exit" viewBox="0 0 24 24">
+          <path d="M15.984 8.016h3v1.969h-4.969v-4.969h1.969v3zM14.016 18.984v-4.969h4.969v1.969h-3v3h-1.969zM8.016 8.016v-3h1.969v4.969h-4.969v-1.969h3zM5.016 15.984v-1.969h4.969v4.969h-1.969v-3h-3z"></path>
+          </symbol>
+    
+          <symbol id="pip" viewBox="0 0 24 24">
+          <path d="M21 19.031v-14.063h-18v14.063h18zM23.016 18.984q0 0.797-0.609 1.406t-1.406 0.609h-18q-0.797 0-1.406-0.609t-0.609-1.406v-14.016q0-0.797 0.609-1.383t1.406-0.586h18q0.797 0 1.406 0.586t0.609 1.383v14.016zM18.984 11.016v6h-7.969v-6h7.969z"></path>
+          </symbol>
+          <!-- <svg class="ytp-subtitles-button-icon" height="100%" version="1.1" viewBox="0 0 36 36" width="100%" fill-opacity="1"><use class="ytp-svg-shadow" xlink:href="#ytp-id-17"></use><path d="M11,11 C9.9,11 9,11.9 9,13 L9,23 C9,24.1 9.9,25 11,25 L25,25 C26.1,25 27,24.1 27,23 L27,13 C27,11.9 26.1,11 25,11 L11,11 Z M11,17 L14,17 L14,19 L11,19 L11,17 L11,17 Z M20,23 L11,23 L11,21 L20,21 L20,23 L20,23 Z M25,23 L22,23 L22,21 L25,21 L25,23 L25,23 Z M25,19 L16,19 L16,17 L25,17 L25,19 L25,19 Z" fill="#fff" id="ytp-id-17"></path></svg> -->
+
+          <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" id="back">
+            <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 278.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/>
+          </symbol>
+          
+          <symbol id="subtitulos">
+            <!-- <path d="M512 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h448c35.35 0 64-28.65 64-64V96C576 60.65 547.3 32 512 32zM528 416c0 8.822-7.178 16-16 16H64c-8.822 0-16-7.178-16-16V96c0-8.822 7.178-16 16-16h448c8.822 0 16 7.178 16 16V416zM236.5 222.1c9.375 9.375 24.56 9.375 33.94 0c9.375-9.375 9.375-24.56 0-33.94c-37.44-37.44-98.31-37.44-135.7 0C116.5 206.2 106.5 230.4 106.5 256s9.1 49.75 28.12 67.88c18.72 18.72 43.28 28.08 67.87 28.08s49.16-9.359 67.87-28.08c9.375-9.375 9.375-24.56 0-33.94c-9.375-9.375-24.56-9.375-33.94 0c-18.69 18.72-49.19 18.72-67.87 0C159.5 280.9 154.5 268.8 154.5 256s5-24.88 14.06-33.94C187.3 203.3 217.8 203.3 236.5 222.1zM428.5 222.1c9.375 9.375 24.56 9.375 33.94 0c9.375-9.375 9.375-24.56 0-33.94c-37.44-37.44-98.31-37.44-135.7 0C308.5 206.2 298.5 230.4 298.5 256s9.1 49.75 28.12 67.88c18.72 18.72 43.28 28.08 67.87 28.08s49.16-9.359 67.87-28.08c9.375-9.375 9.375-24.56 0-33.94c-9.375-9.375-24.56-9.375-33.94 0c-18.69 18.72-49.19 18.72-67.87 0C351.5 280.9 346.5 268.8 346.5 256s5-24.88 14.06-33.94C379.3 203.3 409.8 203.3 428.5 222.1z"/> -->
+            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#fff" stroke="none">
+              <path d="M790 4264 c-89 -14 -145 -31 -220 -66 -120 -58 -231 -168 -288 -288 -71 -150 -67 -72 -67 -1350 0 -1278 -4 -1200 67 -1350 33 -69 56 -100 122 -165 89 -88 159 -130 276 -167 l75 -23 1810 0 1810 0 80 27 c114 39 197 92 274 174 76 81 119 155 153 264 l23 75 0 1170 0 1170 -27 80 c-73 213 -230 365 -448 433 -51 15 -191 17 -1835 18 -979 1 -1791 0 -1805 -2z m2038 -1286 c66 -16 135 -87 151 -154 24 -98 -20 -193 -110 -238 l-53 -26 -788 0 c-690 0 -793 2 -826 16 -79 33 -132 110 -132 194 0 105 56 179 160 211 44 13 1545 11 1598 -3z m1107 -15 c75 -40 115 -105 115 -188 0 -85 -48 -160 -125 -196 -33 -15 -65 -19 -191 -19 -143 0 -153 1 -203 26 -134 67 -158 244 -45 342 24 22 61 45 82 51 20 5 102 9 182 8 126 -2 150 -5 185 -24z m-2137 -852 c139 -71 163 -248 49 -348 -58 -51 -85 -55 -378 -51 -264 3 -266 3 -302 28 -21 14 -50 43 -65 64 -24 35 -27 49 -27 117 0 70 3 81 30 120 17 23 50 53 74 66 43 22 51 23 313 23 245 0 272 -2 306 -19z m2155 -11 c21 -14 50 -43 65 -64 24 -35 27 -49 27 -116 0 -67 -3 -81 -27 -116 -15 -21 -44 -50 -65 -64 l-37 -25 -716 0 -716 0 -37 25 c-21 14 -50 43 -65 64 -24 35 -27 49 -27 117 0 70 3 81 30 120 17 23 50 53 74 66 l45 23 706 -2 706 -3 37 -25z"/>
+              </g>
+          </symbol>
+          <symbol id="subtitulos-cerrar">
+            <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"/>
+            <!-- <path d="M512 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h448c35.35 0 64-28.65 64-64V96C576 60.65 547.3 32 512 32zM168.6 289.9c18.69 18.72 49.19 18.72 67.87 0c9.375-9.375 24.56-9.375 33.94 0s9.375 24.56 0 33.94c-18.72 18.72-43.28 28.08-67.87 28.08s-49.16-9.359-67.87-28.08C116.5 305.8 106.5 281.6 106.5 256s9.1-49.75 28.12-67.88c37.44-37.44 98.31-37.44 135.7 0c9.375 9.375 9.375 24.56 0 33.94s-24.56 9.375-33.94 0c-18.69-18.72-49.19-18.72-67.87 0C159.5 231.1 154.5 243.2 154.5 256S159.5 280.9 168.6 289.9zM360.6 289.9c18.69 18.72 49.19 18.72 67.87 0c9.375-9.375 24.56-9.375 33.94 0s9.375 24.56 0 33.94c-18.72 18.72-43.28 28.08-67.87 28.08s-49.16-9.359-67.87-28.08C308.5 305.8 298.5 281.6 298.5 256s9.1-49.75 28.12-67.88c37.44-37.44 98.31-37.44 135.7 0c9.375 9.375 9.375 24.56 0 33.94s-24.56 9.375-33.94 0c-18.69-18.72-49.19-18.72-67.87 0C351.5 231.1 346.5 243.2 346.5 256S351.5 280.9 360.6 289.9z"/> -->
+          </symbol>
+    
+          <symbol id="check">
+            <path d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z"/>
+          </symbol>
+          <symbol id="close">
+            <path d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/>
+          </symbol>
+          <symbol id="subtitles">
+            <path d="M416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96zM416 352H32C14.33 352 0 337.7 0 320C0 302.3 14.33 288 32 288H416C433.7 288 448 302.3 448 320C448 337.7 433.7 352 416 352zM0 192C0 174.3 14.33 160 32 160H416C433.7 160 448 174.3 448 192C448 209.7 433.7 224 416 224H32C14.33 224 0 209.7 0 192zM416 480H32C14.33 480 0 465.7 0 448C0 430.3 14.33 416 32 416H416C433.7 416 448 430.3 448 448C448 465.7 433.7 480 416 480z"/>
+          </symbol>
+          <symbol id="transcripcion">
+            <!-- <path d="M416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96zM416 352H32C14.33 352 0 337.7 0 320C0 302.3 14.33 288 32 288H416C433.7 288 448 302.3 448 320C448 337.7 433.7 352 416 352zM0 192C0 174.3 14.33 160 32 160H416C433.7 160 448 174.3 448 192C448 209.7 433.7 224 416 224H32C14.33 224 0 209.7 0 192zM416 480H32C14.33 480 0 465.7 0 448C0 430.3 14.33 416 32 416H416C433.7 416 448 430.3 448 448C448 465.7 433.7 480 416 480z"/> -->
+
+
+
+            <!-- xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" -->
+            <path d="M0 96C0 60.7 28.7 32 64 32H512c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM200 208c14.2 0 27 6.1 35.8 16c8.8 9.9 24 10.7 33.9 1.9s10.7-24 1.9-33.9c-17.5-19.6-43.1-32-71.5-32c-53 0-96 43-96 96s43 96 96 96c28.4 0 54-12.4 71.5-32c8.8-9.9 8-25-1.9-33.9s-25-8-33.9 1.9c-8.8 9.9-21.6 16-35.8 16c-26.5 0-48-21.5-48-48s21.5-48 48-48zm144 48c0-26.5 21.5-48 48-48c14.2 0 27 6.1 35.8 16c8.8 9.9 24 10.7 33.9 1.9s10.7-24 1.9-33.9c-17.5-19.6-43.1-32-71.5-32c-53 0-96 43-96 96s43 96 96 96c28.4 0 54-12.4 71.5-32c8.8-9.9 8-25-1.9-33.9s-25-8-33.9 1.9c-8.8 9.9-21.6 16-35.8 16c-26.5 0-48-21.5-48-48z"/>
+          </symbol>
+          <symbol id="search">
+            <path d="M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z"/>
+          </symbol>
+    
+          <symbol id="arrow-back">
+            <path d="M447.1 256C447.1 273.7 433.7 288 416 288H109.3l105.4 105.4c12.5 12.5 12.5 32.75 0 45.25C208.4 444.9 200.2 448 192 448s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25l160-160c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L109.3 224H416C433.7 224 447.1 238.3 447.1 256z"/>
+          </symbol>
+    
+          <symbol id="close">
+            <path d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/>
+          </symbol>
+    
+          <symbol id="signLanguage">
+            <path d="M200 240c16.94 0 32.09 10.72 37.73 26.67c5.891 16.66 24.17 25.39 40.84 19.5c16.66-5.891 25.39-24.17 19.5-40.84C287.2 214.7 262.8 191.6 233.1 181.5l79.68-22.76c16.98-4.859 26.83-22.56 21.97-39.56C329.9 102.2 312.2 92.35 295.2 97.24L196 125.6l80.82-69.28c13.42-11.5 14.97-31.7 3.469-45.12C268.8-2.24 248.6-3.803 235.2 7.713l-100.4 86.09l22.33-48.39c7.391-16.05 .3906-35.06-15.66-42.47C125.4-4.412 106.4 2.525 98.94 18.6L14.92 206.6C5.082 228.6 0 252.5 0 276.6C0 335.9 48.1 384 107.4 384l99.9-.0064c31.87-2.289 61.15-19.35 79.13-46.18c9.828-14.69 5.891-34.56-8.781-44.41C263 283.6 243.1 287.5 233.3 302.2C225.8 313.3 213.4 320 200 320c-22.06 0-40-17.94-40-40C160 257.9 177.9 240 200 240zM532.6 128l-99.9 .004c-31.87 2.289-61.15 19.35-79.13 46.18c-9.828 14.69-5.891 34.56 8.781 44.41c14.66 9.812 34.55 5.906 44.41-8.781C414.2 198.7 426.6 191.1 440 191.1c22.06 0 40 17.94 40 40c0 22.06-17.94 39.1-40 39.1c-16.94 0-32.09-10.72-37.73-26.67c-5.891-16.66-24.17-25.39-40.84-19.5c-16.66 5.891-25.39 24.17-19.5 40.84c10.84 30.64 35.23 53.77 64.96 63.8l-79.68 22.76c-16.98 4.859-26.83 22.56-21.97 39.56c4.844 16.98 22.56 26.86 39.56 21.97l99.2-28.34l-80.82 69.28c-13.42 11.5-14.97 31.7-3.469 45.12c11.52 13.42 31.73 14.98 45.13 3.469l100.4-86.09l-22.33 48.39c-7.391 16.05-.3906 35.06 15.66 42.47c16.02 7.359 35.05 .4219 42.47-15.65l84.02-188C634.9 283.4 640 259.5 640 235.4C640 176.1 591.9 128 532.6 128z"/>
+          </symbol>
+          <symbol id="b-audio-descripcion">
+            <path d="M170.8 280H213.2L192 237.7L170.8 280zM512 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h448c35.35 0 64-28.65 64-64V96C576 60.65 547.3 32 512 32zM274.7 349.5C271.3 351.2 267.6 352 264 352c-8.812 0-17.28-4.859-21.5-13.27L233.2 320H150.8l-9.367 18.73c-5.906 11.86-20.31 16.7-32.19 10.73c-11.88-5.938-16.69-20.34-10.75-32.2l72-144c8.125-16.25 34.81-16.25 42.94 0l72 144C291.4 329.1 286.6 343.5 274.7 349.5zM384 352h-56c-13.25 0-24-10.75-24-24v-144C304 170.8 314.8 160 328 160H384c52.94 0 96 43.06 96 96S436.9 352 384 352zM384 208h-32v96h32c26.47 0 48-21.53 48-48S410.5 208 384 208z"/>
+          </symbol>
+      </defs>
+  </svg>    
+  
+  <script src="js/literales.js"></script>
+  <script src="js/elements.js"></script>
+  <script src="js/basic.js"></script>
+  <script src="js/barra_reproductor.js"></script>
+  <script src="js/volumen.js"></script>
+  <script src="js/pantalla-completa.js"></script>
+  <script src="js/pip.js"></script>
+  <script src="js/subtitulos.js"></script>
+  <script src="js/transcripcion.js"></script>
+  <script src="js/signos.js"></script>
+  <script src="js/audio-descripcion.js"></script>
+  <script src="js/atajos-teclado.js"></script>
+  <script src="js/insertar.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

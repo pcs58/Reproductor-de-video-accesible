@@ -1,0 +1,17 @@
+#pip-button svg{
+    width: 35px;
+    height: 24px;
+    margin: 2px 0;
+}
+#pip-button::before {
+    top: -52px;
+}
+/* #pip-button {
+    width: 28px;
+    height: 38px;
+    
+} */
+
+#detach-button-host {
+    display: none;
+}
